@@ -1,8 +1,35 @@
 import Image from "next/image";
 
-export default function Home() {
+interface postData {
+  userId: number,
+  id: number,
+  title: string,
+  body: string,
+}
+
+const getPost = async () : Promise<postData[]> => {
+  const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+  return await res.json();
+}
+
+export default async function Home() {
+  const posts = await getPost();
+
   return (
     <div>
+      {posts.map((item, index, data) => {
+        if (index + 1 > 5) {
+          return;
+        }
+        return (
+          <div key={item.id}>
+            halo {index + 1}
+            <div>User Id : {item.userId}</div>
+            <div>Title : {item.title}</div>
+            <div>Body : {item.body}</div>
+          </div>
+        )
+      })}
       Hello world!
     </div>
     // <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
